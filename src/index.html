@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../dist/output.css" />
+    <script defer type="module" src="index.js"></script>
+  </head>
+  <body class="bg-zinc-300 h-screen">
+    <div class="add-task-menue-cont hidden absolute w-full h-screen p-8">
+      <div class="add-task-menue mx-auto max-w-xl relative z-20 border-t bg-slate-100 rounded-lg shadow-lg p-4 font-semibold flex flex-col gap-2">
+        <h2>Add new task</h2>
+        <div class="flex flex-col xs:flex-row gap-2">
+          <input type="text" class="add-task-input input w-full" />
+          <button class="add-task-add-btn btn btn-secondary grow">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="add-task-menue-bg fixed top-0 left-0 w-full h-screen z-10 backdrop-blur"></div>
+    </div>
+    <label class="absolute z-20 bottom-5 right-5 btn btn-primary swap swap-rotate">
+      <!-- this hidden checkbox controls the state -->
+      <input class="add-task-menue-btn" type="checkbox" />
+      <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+      </svg>
+      <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+      </svg>
+    </label>
+    <div class="mx-auto max-w-2xl flex flex-col justify-center items-center p-5">
+      <h1 class="font-bold text-xl border-b-4 border-zinc-800 px-4">to-do list</h1>
+      <div class="list-container w-full flex flex-col gap-2 p-5">
+        <div class="bg-zinc-100 border-t border-white p-2 rounded-lg flex justify-start items-center shadow-md gap-2">
+          <input id="checkbox1" class="checkbox" type="checkbox" />
+          <label for="checkbox1" class="grow">cool task yeeerterte</label>
+        </div>
+        <div class="bg-zinc-100 border-t border-white p-2 rounded-lg flex justify-start items-center shadow-md gap-2">
+          <input id="checkbox2" class="checkbox" type="checkbox" />
+          <label for="checkbox2" class="grow">cool task yeeerterte</label>
+        </div>
+        <div class="bg-zinc-100 border-t border-white p-2 rounded-lg flex justify-start items-center shadow-md gap-2">
+          <input id="checkbox3" class="checkbox" type="checkbox" />
+          <label for="checkbox3" class="grow">cool task yeeerterte</label>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
