@@ -1,11 +1,17 @@
-import menueNode from "./modules/pop-up.html";
+import menueNodeImport from "./modules/pop-up.html";
 
 class Menue {
   constructor(main = false) {
     this.main = main;
     const DOMparser = new DOMParser();
-    this.popUpMenue = DOMparser.parseFromString(menueNode, "text/html").body.firstChild;
-    document.body.appendChild(this.popUpMenue);
+    this.popUpMenue = DOMparser.parseFromString(menueNodeImport, "text/html").body.firstChild;
+
+    if (main === true) {
+      document.body.appendChild(this.popUpMenue);
+    } else {
+      document.querySelector(".edit-menues-container").appendChild(this.popUpMenue);
+    }
+    this.addTaskDialogLabel = this.popUpMenue.querySelector("h2");
     this.addTaskAddBtn = this.popUpMenue.querySelector(".add-task-add-btn");
     this.addTaskMenueCont = this.popUpMenue;
     this.addTaskMenue = this.popUpMenue.querySelector(".add-task-menue");
@@ -55,17 +61,10 @@ class Menue {
 
   close() {
     this.addTaskMenueBtn.checked = false;
-    this.addTaskMenueBtn.removeEventListener(
-      "click",
-      () => {
-        this.close();
-      },
-      { once: true }
-    );
 
     this.addTaskMenue.classList.add("animate-close-menue");
     this.addTaskMenueBg.classList.add("animate-fade-out");
-
+    this.addTaskInput.value = "";
     setTimeout(() => {
       this.addTaskMenueCont.classList.add("hidden");
 
@@ -75,17 +74,75 @@ class Menue {
   }
 }
 
-import toDoListNode from "./modules/task-item.html";
+import toDoListNodeImport from "./modules/task-item.html";
+
+function ToDoItemUtil(title) {
+  this.title = title;
+}
+function NodeUtin(title, dataEntryNumber) {
+  this.dataEntryNumber = dataEntryNumber;
+  this.title = title;
+  const DOMparser = new DOMParser();
+  this.node = DOMparser.parseFromString(toDoListNodeImport, "text/html").body.firstChild;
+
+  this.node.setAttribute("dataEntryNumber", dataEntryNumber);
+  this.checkBox = this.node.querySelector("input");
+  this.editBtn = this.node.querySelector("button");
+  this.label = this.node.querySelector("label");
+  this.label.innerText = title;
+}
 
 class ToDoList {
   constructor() {
     this.toDoListArray = [];
+    this.listContainer = document.querySelector(".list-container");
+  }
+  updateDisplay(edited = false, checked = false) {
+    document.querySelector(".edit-menues-container").innerHTML = "";
+    this.listContainer.innerHTML = "";
+    let count = 0;
+    this.toDoListArray.forEach((item) => {
+      let currentNode = new NodeUtin(item.title, count);
+      console.log(this.toDoListArray.length);
+
+      if (count === this.toDoListArray.length - 1 && !edited && !checked) {
+        currentNode.node.classList.add("animate-add-new-item");
+      }
+      count += 1;
+      let editMenu = new Menue();
+      currentNode.editBtn.addEventListener("click", () => {
+        editMenu.addTaskDialogLabel.innerText = "Edit item";
+        editMenu.addTaskInput.value = item.title;
+        editMenu.addTaskAddBtn.addEventListener("click", () => {
+          this.toDoListArray[currentNode.dataEntryNumber].title = editMenu.addTaskInput.value;
+          currentNode.label.innerText = editMenu.addTaskInput.value;
+          editMenu.close();
+
+          setTimeout(() => {
+            this.updateDisplay((edited = true));
+          }, 200);
+        });
+        editMenu.open();
+      });
+      currentNode.checkBox.addEventListener("input", () => {
+        this.toDoListArray.splice(currentNode.dataEntryNumber, 1);
+        currentNode.node.classList.add("animate-remove-item");
+        setTimeout(() => {
+          this.updateDisplay((checked = true));
+        }, 550);
+      });
+
+      this.listContainer.appendChild(currentNode.node);
+    });
   }
 
   append(title, desc) {
-    this.toDoListArray.push(title);
+    this.toDoListArray.push(new ToDoItemUtil(title));
+    this.updateDisplay();
+    /*
+    this.toDoListArray.push(new ToDoItemUtil(title));
     const DOMparser = new DOMParser();
-    let node = DOMparser.parseFromString(toDoListNode, "text/html").body.firstChild;
+    let node = DOMparser.parseFromString(toDoListNodeImport, "text/html").body.firstChild;
     let checkBox = node.querySelector("input");
     this.label = node.querySelector("label");
     this.label.setAttribute("for", this.toDoListArray.length);
@@ -93,7 +150,7 @@ class ToDoList {
     this.label.innerText = menue.addTaskInput.value;
 
     menue.addTaskInput.value = "";
-    listContainer.appendChild(node);
+    this.listContainer.appendChild(node);
     checkBox.addEventListener("input", () => {
       node.classList.add("animate-remove-item");
       setTimeout(() => {
@@ -111,6 +168,7 @@ class ToDoList {
       this.label.innerText = menueEdit.addTaskInput.value;
       menueEdit.close();
     });
+    */
   }
 }
 let toDoList = new ToDoList();
@@ -120,5 +178,3 @@ menue.addTaskAddBtn.addEventListener("click", () => {
   toDoList.append(menue.addTaskInput.value);
   menue.close();
 });
-
-let listContainer = document.querySelector(".list-container");
