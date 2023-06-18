@@ -1,9 +1,8 @@
-import htmlContent from "./modules/task-item.html";
-console.log(htmlContent);
-
 class Menue {
   constructor() {}
   open() {
+    addTaskMenueBtn.checked = true;
+
     AddTaskMenueCont.classList.remove("hidden");
 
     addTaskMenue.classList.add("animate-open-menue");
@@ -16,6 +15,7 @@ class Menue {
   }
 
   close() {
+    addTaskMenueBtn.checked = false;
     addTaskMenue.classList.add("animate-close-menue");
     addTaskMenueBg.classList.add("animate-fade-out");
 
@@ -42,12 +42,27 @@ addTaskMenueBtn.addEventListener("input", () => {
   }
 });
 addTaskMenueBg.addEventListener("click", () => {
-  addTaskMenueBtn.checked = false;
   menue.close();
 });
 
+let toDoListArray = [];
+
+import htmlContent from "./modules/task-item.html";
+const DOMparser = new DOMParser();
+
+let listContainer = document.querySelector(".list-container");
 let addTaskInput = document.querySelector(".add-task-input");
 let addTaskAddBtn = document.querySelector(".add-task-add-btn");
 addTaskAddBtn.addEventListener("click", () => {
-  console.log(addTaskInput.value);
+  toDoListArray.push(addTaskInput.value);
+  let node = DOMparser.parseFromString(htmlContent, "text/html").body.firstChild;
+  let label = node.querySelector("label");
+  label.setAttribute("for", toDoListArray.length);
+  let input = node.querySelector("input");
+  input.id = toDoListArray.length;
+  label.innerText = addTaskInput.value;
+
+  addTaskInput.value = "";
+  listContainer.appendChild(node);
+  menue.close();
 });

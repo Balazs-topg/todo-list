@@ -1,6 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["src/**/*.html", "src/**/*.js", "src/modules/**/*.html"],
+  purge: {
+    enabled: true,
+    content: ["src/**/*.html", "src/**/*.js", "src/modules/**/*.html"],
+    options: {
+      defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+      output: "output.css", // Specify the output location
+    },
+  },
+
   theme: {
     screens: {
       xs: "480px",
