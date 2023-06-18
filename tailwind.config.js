@@ -37,12 +37,23 @@ module.exports = {
           "0%": { opacity: "1" },
           "100%": { opacity: "0" },
         },
+        addNewItem: {
+          "0%": { transform: "scaleY(0)" },
+          "80%": { transform: "scaleY(1.1)" },
+          "100%": { transform: "scaleY(1)" },
+        },
+        removeItem: {
+          "0%": { transform: "scaleY(1)", marginBottom: "0px" },
+          "100%": { transform: "scaleY(0)", marginBottom: "calc(-2.5rem - 0.5rem)" },
+        },
       },
       animation: {
         "open-menue": "openMenue 200ms ease-out",
         "close-menue": "closeMenue 200ms ease-out",
         "fade-in": "fadeIn 200ms ease-out",
         "fade-out": "fadeOut 200ms ease-out",
+        "add-new-item": "addNewItem 300ms ease-out",
+        "remove-item": "removeItem 300ms ease-out 250ms",
       },
     },
   },

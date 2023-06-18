@@ -7,21 +7,7 @@
     <link rel="stylesheet" href="../dist/output.css" />
     <script defer type="module" src="index.js"></script>
   </head>
-  <body class="bg-zinc-300 min-h-screen">
-    <div class="add-task-menue-cont hidden absolute w-full h-screen p-8">
-      <div class="add-task-menue mx-auto max-w-xl relative z-20 border-t bg-slate-100 rounded-lg shadow-lg p-4 font-semibold flex flex-col gap-2">
-        <h2>Add new task</h2>
-        <div class="flex flex-col xs:flex-row gap-2">
-          <input type="text" class="add-task-input input w-full" />
-          <button class="add-task-add-btn btn btn-secondary grow">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="add-task-menue-bg fixed top-0 left-0 w-full h-screen z-10 backdrop-blur"></div>
-    </div>
+  <body class="bg-zinc-300 min-h-screen selection:bg-secondary selection:opacity-50">
     <label class="fixed z-20 bottom-5 right-5 btn btn-primary swap swap-rotate">
       <!-- this hidden checkbox controls the state -->
       <input class="add-task-menue-btn" type="checkbox" />

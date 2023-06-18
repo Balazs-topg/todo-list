@@ -1,68 +1,124 @@
+import menueNode from "./modules/pop-up.html";
+
 class Menue {
-  constructor() {}
+  constructor(main = false) {
+    this.main = main;
+    const DOMparser = new DOMParser();
+    this.popUpMenue = DOMparser.parseFromString(menueNode, "text/html").body.firstChild;
+    document.body.appendChild(this.popUpMenue);
+    this.addTaskAddBtn = this.popUpMenue.querySelector(".add-task-add-btn");
+    this.addTaskMenueCont = this.popUpMenue;
+    this.addTaskMenue = this.popUpMenue.querySelector(".add-task-menue");
+    this.addTaskInput = this.popUpMenue.querySelector("input");
+
+    this.addTaskMenueBtn = document.querySelector(".add-task-menue-btn");
+    if (main === true) {
+      this.addTaskMenueBtn.addEventListener("input", () => {
+        if (this.addTaskMenueBtn.checked) {
+          this.open();
+        }
+      });
+    }
+    this.addTaskMenueBg = this.popUpMenue.querySelector(".add-task-menue-bg");
+    this.addTaskMenueBg.addEventListener("click", () => {
+      this.close();
+    });
+  }
+
+  setupClose() {
+    this.addTaskMenueBtn.addEventListener(
+      "click",
+      () => {
+        if (!this.addTaskMenueBtn.checked) {
+          this.close();
+        }
+      },
+      { once: true }
+    );
+  }
+
   open() {
-    addTaskMenueBtn.checked = true;
+    this.addTaskMenueBtn.checked = true;
+    this.setupClose();
 
-    AddTaskMenueCont.classList.remove("hidden");
+    this.addTaskMenueCont.classList.remove("hidden");
+    this.addTaskInput.focus();
 
-    addTaskMenue.classList.add("animate-open-menue");
-    addTaskMenueBg.classList.add("animate-fade-in");
+    this.addTaskMenue.classList.add("animate-open-menue");
+    this.addTaskMenueBg.classList.add("animate-fade-in");
 
     setTimeout(() => {
-      addTaskMenue.classList.remove("animate-open-menue");
-      addTaskMenueBg.classList.remove("animate-fade-in");
+      this.addTaskMenue.classList.remove("animate-open-menue");
+      this.addTaskMenueBg.classList.remove("animate-fade-in");
     }, 200);
   }
 
   close() {
-    addTaskMenueBtn.checked = false;
-    addTaskMenue.classList.add("animate-close-menue");
-    addTaskMenueBg.classList.add("animate-fade-out");
+    this.addTaskMenueBtn.checked = false;
+    this.addTaskMenueBtn.removeEventListener(
+      "click",
+      () => {
+        this.close();
+      },
+      { once: true }
+    );
+
+    this.addTaskMenue.classList.add("animate-close-menue");
+    this.addTaskMenueBg.classList.add("animate-fade-out");
 
     setTimeout(() => {
-      AddTaskMenueCont.classList.add("hidden");
+      this.addTaskMenueCont.classList.add("hidden");
 
-      addTaskMenue.classList.remove("animate-close-menue");
-      addTaskMenueBg.classList.remove("animate-fade-out");
+      this.addTaskMenue.classList.remove("animate-close-menue");
+      this.addTaskMenueBg.classList.remove("animate-fade-out");
     }, 200);
   }
 }
-let menue = new Menue();
 
-let AddTaskMenueCont = document.querySelector(".add-task-menue-cont");
-let addTaskMenue = document.querySelector(".add-task-menue");
-let addTaskMenueBg = document.querySelector(".add-task-menue-bg");
-let addTaskMenueBtn = document.querySelector(".add-task-menue-btn");
-addTaskMenueBtn.addEventListener("input", () => {
-  if (addTaskMenueBtn.checked) {
-    menue.open();
+import toDoListNode from "./modules/task-item.html";
+
+class ToDoList {
+  constructor() {
+    this.toDoListArray = [];
   }
-  if (!addTaskMenueBtn.checked) {
-    menue.close();
+
+  append(title, desc) {
+    this.toDoListArray.push(title);
+    const DOMparser = new DOMParser();
+    let node = DOMparser.parseFromString(toDoListNode, "text/html").body.firstChild;
+    let checkBox = node.querySelector("input");
+    this.label = node.querySelector("label");
+    this.label.setAttribute("for", this.toDoListArray.length);
+    checkBox.id = this.toDoListArray.length;
+    this.label.innerText = menue.addTaskInput.value;
+
+    menue.addTaskInput.value = "";
+    listContainer.appendChild(node);
+    checkBox.addEventListener("input", () => {
+      node.classList.add("animate-remove-item");
+      setTimeout(() => {
+        node.classList.add("hidden");
+      }, 550);
+    });
+    let menueEdit = new Menue();
+    let editBtn = node.querySelector("button");
+    editBtn.addEventListener("click", () => {
+      menueEdit.popUpMenue.querySelector("h2").innerText = "Edit task";
+      menueEdit.addTaskInput.value = this.label.innerText;
+      menueEdit.open();
+    });
+    menueEdit.addTaskAddBtn.addEventListener("click", () => {
+      this.label.innerText = menueEdit.addTaskInput.value;
+      menueEdit.close();
+    });
   }
-});
-addTaskMenueBg.addEventListener("click", () => {
+}
+let toDoList = new ToDoList();
+
+let menue = new Menue(true);
+menue.addTaskAddBtn.addEventListener("click", () => {
+  toDoList.append(menue.addTaskInput.value);
   menue.close();
 });
-
-let toDoListArray = [];
-
-import htmlContent from "./modules/task-item.html";
-const DOMparser = new DOMParser();
 
 let listContainer = document.querySelector(".list-container");
-let addTaskInput = document.querySelector(".add-task-input");
-let addTaskAddBtn = document.querySelector(".add-task-add-btn");
-addTaskAddBtn.addEventListener("click", () => {
-  toDoListArray.push(addTaskInput.value);
-  let node = DOMparser.parseFromString(htmlContent, "text/html").body.firstChild;
-  let label = node.querySelector("label");
-  label.setAttribute("for", toDoListArray.length);
-  let input = node.querySelector("input");
-  input.id = toDoListArray.length;
-  label.innerText = addTaskInput.value;
-
-  addTaskInput.value = "";
-  listContainer.appendChild(node);
-  menue.close();
-});
